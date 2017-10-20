@@ -91,6 +91,9 @@ class Address(object):
             self._check_remaining_indices()
         except InvalidAddressError:
             pass
+        except IndexError:
+            self.error = "Invalid Address Format - Too short"
+            pass
 
     @property
     def street_number(self):

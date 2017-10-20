@@ -219,3 +219,10 @@ def test_extract_all_can_handle_large_text():
     assert str(addr2) == "1010 W COTTONWOOD LN SURPRISE AZ 85374-3628"
     assert str(addr3) == "123 JERRY STREET SURPRISE AZ 85374"
     assert str(addr4) == "123 N JERRY STREET SURPRISE AZ 85374"
+
+def test_extract_all_fails_on_too_short_addresses():
+    phrase = "1111111"
+    extracted = extract_all(phrase)
+    assert len(extracted) == 1
+    addr1 = extracted[0]
+    assert addr1.error == "State Not Found"
