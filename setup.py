@@ -80,9 +80,7 @@ setup(
     # http://docs.python.org/3.4/distutils/setupscript.html#installing-additional-files # noqa
     # In this case, 'data_file' will be installed into '<sys.prefix>/my_data'
     data_files=[
-        ('street_types', ['data/street_types.txt']),
-        ('unit_types', ['data/unit_types.txt']),
-        ('us_zipcodes', ['data/us_zipcodes.csv']),
+        ('data', ['data/street_types.txt', 'data/unit_types.txt', 'data/us_zipcodes.csv']),
     ],
 
     # To provide executable scripts, use entry points in preference to the
