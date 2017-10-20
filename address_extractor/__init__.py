@@ -19,8 +19,9 @@ class Address(object):
         self.street_direction_index = None
         self.street_name_range = None
         self.street_type_index = None
-        self.unit_type_index = None
-        self.unit_number_index = None
+        self.unit_range = None
+        # self.unit_type_index = None
+        # self.unit_number_index = None
         self.city_range = None
         self.state_index = None
         self.zipcode_index = None
@@ -48,8 +49,7 @@ class Address(object):
             self.street_direction,
             self.street_name,
             self.street_type,
-            self.unit_type,
-            self.unit_number,
+            self.unit,
             self.city,
             self.state,
             self.zipcode,
@@ -86,8 +86,7 @@ class Address(object):
             self._remove_indices_after_zipcode()
             self._extract_street_type()
             self._extract_street_name()
-            self._extract_unit_type()
-            self._extract_unit_number()
+            self._extract_unit()
             self._check_remaining_indices()
         except InvalidAddressError:
             pass
@@ -120,8 +119,8 @@ class Address(object):
         return self._get_by_index("zipcode_index")
 
     @property
-    def unit_type(self):
-        return self._get_by_index("unit_type_index")
+    def unit(self):
+        return self._get_by_range("unit_range")
 
     @property
     def unit_number(self):
@@ -145,14 +144,6 @@ class Address(object):
                 return self.tokens[low]
             else:
                 return " ".join(self.tokens[low:high])
-
-    def _assign_unit_type(self):
-        self.unit_type_index = self._index_of_unit(self.tokens)
-        if self.unit_type_index:
-            self.unit_type = self.tokens[unit_type_index]
-            unit_number = self.tokens[unit_type_index + 1]
-            if unit_number.isnumeric():
-                self.unit_number = unit_number
 
     def _extract_state(self):
         for index in range(len(self.tokens)):
@@ -213,37 +204,29 @@ class Address(object):
             self.error = "Invalid City/State/Zipcode Combo"
             raise InvalidAddressError
 
-    def _extract_unit_type(self):
+    def _extract_unit(self):
         """
         No error from this method because it is optional
         depends_on:
             - city_range
+            - street_type_index
         """
+        start = self.street_type_index
+        stop = min(self.city_range)
+        unit_indices = []
+        has_a_unit_type = False
         for index in reversed(self._remaining_indices):
-            if index < min(self.city_range):
+            if index > start and index < stop:
                 token = self.tokens[index]
-                is_unit_typed = unit_type.is_unit_type(token)
-                if is_unit_typed:
-                    self.unit_type_index = index
-                    self._remaining_indices.remove(index)
-                    return
+                if unit_type.is_unit_type(token):
+                    has_a_unit_type = True
+                unit_indices.append(index)
+        if has_a_unit_type or (len(unit_indices) == 1 and self.tokens[unit_indices[0]].isnumeric()):
+            for index in unit_indices:
+                self._remaining_indices.remove(index)
+            self.unit_range = (min(unit_indices), stop)
     
-    def _extract_unit_number(self):
-        """
-        depends_on:
-            - unit_type_index
-        """
-        if self.unit_type_index is None:
-            # there is no unit type so we're done here
-            return
-        index = self.unit_type_index + 1
-        if index not in self._remaining_indices:
-            # if the index following the 
-            self.error = "Unit type has no corresponding number"
-            raise InvalidAddressError
-        self.unit_number_index = index
-        self._remaining_indices.remove(index)
-
+    
     # def _extract_street_direction(self):
     #     """
     #     No error from this method because it is optional

@@ -117,8 +117,7 @@ def test_extract_all_can_handle_units():
     assert addr1.street_direction == "N"
     assert addr1.street_name == "Scottsdale"
     assert addr1.street_type == "Rd"
-    assert addr1.unit_type == "APT"
-    assert addr1.unit_number == "14"
+    assert addr1.unit == "APT 14"
     assert str(addr1) == "212 N Scottsdale Rd APT 14 Scottsdale AZ 85255"
 
 def test_extract_all_can_handle_dashed_zipcodes():
