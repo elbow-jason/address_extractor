@@ -1,0 +1,6 @@
+.vscode/
+.cache/
+*.egg-info/
+.ipynb_checkpoints/
+venv/
+*.ipynb
