@@ -1,7 +1,8 @@
 
+from address_extractor import datafile
+
 def load_street_types():
-    with open("./data/street_types.txt") as f:
-        return set(line.strip().lower() for line in f.readlines())
+        return set(line.strip().lower() for line in datafile.read_street_types())
 
 STREET_TYPES = load_street_types()
 

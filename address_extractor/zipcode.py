@@ -1,4 +1,6 @@
 
+from address_extractor import datafile
+
 class ZipcodeInfo(object):
     @staticmethod
     def from_line(line):
@@ -22,14 +24,15 @@ class ZipcodeInfo(object):
             and self.zipcode == zipcode
         )
 
+
+
+
 def load_zipcodes():
-    with open("./data/us_zipcodes.csv") as f:
-        lines = [line.strip() for line in f.readlines()][1:]
-        zipcodes = {}
-        for line in lines:
-            zip_info = ZipcodeInfo.from_line(line)
-            zipcodes[zip_info.zipcode] = zip_info
-        return zipcodes
+    zipcodes = {}
+    for line in datafile.read_us_zipcodes()[1:]:
+        zip_info = ZipcodeInfo.from_line(line)
+        zipcodes[zip_info.zipcode] = zip_info
+    return zipcodes
 
 ZIPCODE_INFOS = load_zipcodes()
 
