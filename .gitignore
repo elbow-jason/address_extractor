@@ -1,6 +1,7 @@
 .vscode/
 .cache/
 *.egg-info/
+__pycache__/
 .ipynb_checkpoints/
 venv/
 *.ipynb

@@ -302,12 +302,9 @@ class Address(object):
             direction_index = parts[0]
             direction_token = self.tokens[direction_index]
             is_direction = street_direction.is_direction(direction_token)
-            print("direction_token", direction_index, direction_token, is_direction)
             if is_direction:
                 self.street_direction_index = direction_index
                 parts.remove(direction_index)
-                print("parts inner", parts)
-        print("parts outer", parts)
         self.street_name_range = (min(parts), self.street_type_index)
 
     def _check_remaining_indices(self):

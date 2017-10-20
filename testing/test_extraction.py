@@ -32,7 +32,7 @@ def test_extract_all_returns_errored_addresses_for_invalid_address_text():
 
 def test_extract_all_can_handle_multiple_addresses():
     phrase = """
-    There are 13 cats at jason's house in Phoenix, AZ. Jason lives at 13
+    There are 13 cats at Jason's house in Phoenix, AZ. Jason lives at 13
     Maple St. Phoenix, Az 85053 and his mom lives at 456 Maple Cir
     Scottsdale, AZ 85255 with her BF.
     """
@@ -44,6 +44,21 @@ def test_extract_all_can_handle_multiple_addresses():
     assert addr2.error == None
     assert str(addr2) == "13 Maple St Phoenix Az 85053"
     addr3 = extracted[2]
+    assert addr3.error == None
+    assert str(addr3) == "456 Maple Cir Scottsdale AZ 85255"
+
+def test_readme_example_works():
+    phrase = """
+    There are 13 cats at Jason's house in Phoenix, AZ. Jason lives at 13
+    Maple St. Phoenix, Az 85053 and his mom lives at 456 Maple Cir
+    Scottsdale, AZ 85255 with her BF.
+    """
+    extracted = extract_all(phrase)
+    valid_addrs = [x for x in extracted if x.is_valid]
+    addr2 = valid_addrs[0]
+    assert addr2.error == None
+    assert str(addr2) == "13 Maple St Phoenix Az 85053"
+    addr3 = valid_addrs[1]
     assert addr3.error == None
     assert str(addr3) == "456 Maple Cir Scottsdale AZ 85255"
 
@@ -142,7 +157,6 @@ def test_extract_all_can_handle_large_text():
         PUB RUB DUB, A SINGLE MAN
         
         156 JERRY STREET SURPRISE, AZ 85374
-        
         3. BUYERâ€™S NAME & ADDRESS:
         
         BILL MANUEL JUAREZ , A SINGLE MAN AND BONIFACIO
