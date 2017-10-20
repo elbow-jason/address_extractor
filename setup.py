@@ -80,7 +80,7 @@ setup(
             'data/unit_types.txt',
             'data/us_zipcodes.csv',
         ],
-    }
+    },
 
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages. See:
