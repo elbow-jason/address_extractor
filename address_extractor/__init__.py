@@ -14,7 +14,7 @@ class InvalidAddressError(Exception):
 
 class Address(object):
     def __init__(self, tokens):
-        self.tokens = tuple(self._clean_tokens(tokens[:15]))
+        self.tokens = tuple(self._clean_tokens(tokens[:11]))
         self.street_number_index = None
         self.street_direction_index = None
         self.street_name_range = None
